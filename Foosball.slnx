@@ -3,6 +3,8 @@
     <Project Path="BusinessLogic\BusinessLogic.csproj" Type="Classic C#" />
     <Project Path="FrontEnd\FrontEnd.csproj" Type="Classic C#" />
   </Folder>
-  <Folder Name="/test/" />
+  <Folder Name="/test/">
+          
+  </Folder>
   
 </Solution>
