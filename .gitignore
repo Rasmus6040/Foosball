@@ -11,3 +11,5 @@ BusinessLogic/bin
 DTO/bin
 BusinessLogic/EloSystem.db-shm
 BusinessLogic/EloSystem.db-wal
+bin
+obj
