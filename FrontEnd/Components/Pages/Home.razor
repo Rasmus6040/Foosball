@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Syncfusion.Blazor.Grids
 @rendermode InteractiveServer
 
 <PageTitle>Foosball</PageTitle>
@@ -38,6 +39,27 @@ else
 </table>
 }
 
+<SfGrid TValue="Match" ID="Grid" DataSource="latestMatches" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+    <GridPageSettings PageSize="8"></GridPageSettings>
+    <GridFilterSettings Type="FilterType.Menu"></GridFilterSettings>
+    <GridColumns>
+        <GridColumn Field="@nameof(Match.DateOfMatch)" HeaderText="Date" Type="ColumnType.DateTime"></GridColumn>
+        <GridColumn Field="@nameof(Match.TeamBlue)" HeaderText="Team Blue">
+            <Template>
+                @string.Join(", ", ((Match)context).TeamBlue)
+            </Template>
+        </GridColumn>
+        <GridColumn Field="@nameof(Match.TeamRed)" HeaderText="Team Red">
+            <Template>
+                @string.Join(", ", ((Match)context).TeamRed)
+            </Template>
+        </GridColumn>
+        <GridColumn Field="@nameof(Match.GoalsBlue)" HeaderText="Goals Blue"></GridColumn>
+        <GridColumn Field="@nameof(Match.GoalsRed)" HeaderText="Goals Red"></GridColumn>
+        <GridColumn Field="@nameof(Match.EloDifference)" HeaderText="Elo Difference"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
 @code {
     private Match[]? latestMatches;
 
@@ -51,12 +73,13 @@ else
     latestMatches = Enumerable.Range(1, 5).Select(index => new Match
         {
             DateOfMatch = startDate.AddDays(index),
-            TeamBlue = Enumerable.Range(0, random.Next(1, 3)).Select(x => players[random.Next(1,players.Length)]).ToList(),
-            TeamRed = Enumerable.Range(0, random.Next(1, 3)).Select(x => players[random.Next(1,players.Length)]).ToList(),
+            TeamBlue = Enumerable.Range(0, random.Next(1, 3)).Select(x => players[random.Next(0,players.Length)]).ToList(),
+            TeamRed = Enumerable.Range(0, random.Next(1, 3)).Select(x => players[random.Next(0, players.Length)]).ToList(),
             GoalsBlue = random.Next(0,10),
             GoalsRed = random.Next(0,10),
             EloDifference = random.Next(1,15) 
         }).ToArray();
+        
     }
 
     private class Match
