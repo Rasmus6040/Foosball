@@ -7,11 +7,21 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Syncfusion.Blazor.Cards" Version="27.1.58" />
       <PackageReference Include="Serilog" Version="4.1.0" />
       <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
       <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
       <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
       <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+<<<<<<< HEAD
+      <PackageReference Include="Syncfusion.Blazor.Cards" Version="27.1.58" />
+=======
+      <PackageReference Include="Serilog" Version="4.1.0" />
+      <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
+      <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
+      <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
+      <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+>>>>>>> origin/main
       <PackageReference Include="Syncfusion.Blazor.Core" Version="27.1.58" />
       <PackageReference Include="Syncfusion.Blazor.Grid" Version="27.1.58" />
       <PackageReference Include="Syncfusion.Blazor.Themes" Version="27.1.58" />
