@@ -1,0 +1,18 @@
+@using DTO.Data.Models
+@using Serilog
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Data
+<SfDialog Width="500px" ShowCloseIcon="true" @bind-Visible="Visible">
+    <DialogTemplates>
+        <Header> <h1>Pick a Player for @( BlueTeam ? "Blue Team" : "Red Team")</h1> </Header>
+        <Content>
+            <SfAutoComplete TValue="Player" TItem="Player" Placeholder="e.g. John Doe" @bind-Value="@_selectedPlayer" @onkeydown="@Enter">
+                <SfDataManager Url=@($"https://localhost:7078/odata/v4/{nameof(Player)}") Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                <AutoCompleteFieldSettings Text="@(nameof(Player.Name))" Value="@(nameof(Player.Name))"/>
+                @*<AutoCompleteEvents TItem="Player" TValue="Player" ValueChange="@(x => Log.Information("Value updated?" + ((Player)x.Value).Name))"></AutoCompleteEvents>*@
+            </SfAutoComplete>
+        </Content>
+    </DialogTemplates>
+</SfDialog>

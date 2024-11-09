@@ -1,12 +1,14 @@
 ﻿@page "/match"
 @rendermode InteractiveServer
+@using DTO.Data.Entities
+@using DTO.Data.Models
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Buttons
 
 <PageTitle>Counter</PageTitle>
 
 <div class="match-list">
-    @foreach(DTO.Data.Match match in _matches)
+    @foreach(MatchEntity match in _matches)
     {
         <MatchCard Match="match" />
     }
@@ -14,11 +16,36 @@
 
 <div class="match-form">
     <div class="score-wrapper">
-        <label for="redScore">Red Score</label>
-        <SfNumericTextBox id="redScore" @bind-Value="_redScore" TValue="int" Min="0" Max="10" CssClass="score-input" />
-
-        <label for="blueScore">Blue Score</label>
-        <SfNumericTextBox id="blueScore" @bind-Value="_blueScore" TValue="int" Min="0" Max="10" CssClass="score-input" />
+        <div class="red-team">
+            <h3>Red team</h3>
+            <div class="team-images">
+                @foreach(Player player in _redTeam)
+                {
+                    <img class="player-avatar" src=@player.ImageUrl alt="Red Team Player">
+                }
+                @if (_redTeam.Count < 2)
+                {
+                    <SfButton IconCss="e-btn-sb-icons e-add-icon" CssClass="e-small e-round" IsPrimary="true" @onclick="() => ShowDialog(false)"></SfButton> <!-- Add Player to Red Team -->
+                }
+            </div> 
+            <label for="redScore">Red Score</label>
+            <SfNumericTextBox id="redScore" @bind-Value="_redScore" TValue="int" Min="0" Max="10" CssClass="score-input"/>
+        </div>
+        <div class="blue-team">
+            <h3>Blue team</h3>
+            <div class="team-images">
+                @foreach(Player player in _blueTeam)
+                {
+                <img class="player-avatar" src=@player.ImageUrl alt="Blue Team Player">
+                }
+                @if (_blueTeam.Count < 2)
+                {
+                    <SfButton IconCss="e-btn-sb-icons e-add-icon" CssClass="e-small e-round" IsPrimary="true" @onclick="() => ShowDialog(true)"></SfButton> <!-- Add Player to Blue Team -->
+                }
+            </div> 
+            <label for="blueScore">Blue Score</label>
+            <SfNumericTextBox id="blueScore" @bind-Value="_blueScore" TValue="int" Min="0" Max="10" CssClass="score-input"/>
+        </div>
     </div>
 
     <div class="switch-wrapper">
@@ -33,15 +60,33 @@
     <p>@_matchResult</p>
 </div>
 
-
+<PlayerSearchDialog BlueTeam="true" Visible="@_isBlueDialogVisible" VisibleChanged="@(value => _isBlueDialogVisible = value)" PlayerSubmitted="AddPlayerToBlueTeam"></PlayerSearchDialog>
+<PlayerSearchDialog BlueTeam="false" Visible="@_isRedDialogVisible" VisibleChanged="@(value => _isRedDialogVisible = value)" PlayerSubmitted="AddPlayerToRedTeam"></PlayerSearchDialog>
 
 @code {
     private int _redScore;
     private int _blueScore;
     private bool _isRanked;
     private string _matchResult = string.Empty;
-    private readonly List<DTO.Data.Match> _matches = [];
-
+    private readonly List<MatchEntity> _matches = [];
+    private bool _isBlueDialogVisible;
+    private bool _isRedDialogVisible;
+    private readonly List<Player> _redTeam = [];
+    private readonly List<Player> _blueTeam = [];
+    
+    private void AddPlayerToRedTeam(Player player) => _redTeam.Add(player);
+    private void AddPlayerToBlueTeam(Player player) => _blueTeam.Add(player);
+    private void ShowDialog(bool isBlueTeam)
+    {
+        if (isBlueTeam)
+        {
+            _isBlueDialogVisible = true;
+        }
+        else
+        {
+            _isRedDialogVisible = true;
+        }
+    }
 
     private void ValidateMatch()
     {
@@ -70,29 +115,54 @@
 
     private void AddMatch(int redScore, int blueScore, bool isRanked)
     {
-        var match = new DTO.Data.Match
+        var match = new MatchEntity
         {
             TeamAScore = redScore,
             TeamBScore = blueScore,
             Ranked = isRanked,
-            Date = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+            Date = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+            PlayerMatches = [
+            new PlayerMatchEntity
+            {
+                PlayerId = 1,
+                Team = 1
+            },
+            new PlayerMatchEntity
+            {
+                PlayerId = 2,
+                Team = 2,
+            }
+            ]
         };
         _matches.Add(match);
     }
 }
 
+
 <style>
     .match-form {
+        margin: 0 auto;
+        max-width: 800px;
         display: flex;
         flex-direction: column;
         gap: 1rem;
     }
     .score-wrapper {
         display: flex;
-        gap: 0.5rem;
+        gap: 2.5rem;
         align-items: center;
     }
     .switch-wrapper, .button-wrapper {
         margin-top: 1rem;
+    }
+    
+    .team-images {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .player-avatar {
+        width: 40%;
+        max-width: 160px;
     }
 </style>
