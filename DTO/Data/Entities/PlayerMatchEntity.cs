@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BusinessLogic.Data.Entities;
+namespace DTO.Data.Entities;
 
 public class PlayerMatchEntity
 {
