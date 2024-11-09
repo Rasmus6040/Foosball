@@ -1,8 +1,9 @@
 using DTO.Data.Entities;
+using DTO.Data.Models;
 
 namespace ELOSystem;
 
-public class ELOCalculator
+public class EloCalculator
 {
     // Parameters for fine-tuning of ELO Algorithm
     private const int K = 30;
@@ -17,14 +18,17 @@ public class ELOCalculator
     /// <param name="teamB"> second player</param>
     /// <param name="score"> scores of the game</param>
     /// <exception cref="ArgumentException"> Throws error if Team is empty</exception>
-    public void UpdateRatings(List<PlayerEntity> teamA, List<PlayerEntity> teamB, (int A, int B) score)
+    public MatchEloChange GetRatings(List<PlayerEntity> teamA, List<PlayerEntity> teamB, (int A, int B) score)
     {
         double ratingTeamA = TeamRating(teamA);
         double ratingTeamB = TeamRating(teamB);
         (double A, double B) changes = CalculateChange(ratingTeamA, ratingTeamB, score);
-
+        
+        List<(int, int)> playerIdsAndEloChange = new List<(int, int)>();
         teamA.ForEach(a => a.Rating += (changes.A / teamA.Count));
         teamB.ForEach(b => b.Rating += (changes.B / teamB.Count));
+        teamA.ForEach(a => playerIdsAndEloChange.Add((a.Id, (int)Math.Round(changes.A / teamA.Count))));
+        teamB.ForEach(b => playerIdsAndEloChange.Add((b.Id, (int)Math.Round(changes.B / teamB.Count))));
 
         double TeamRating(List<PlayerEntity> players)
         {
@@ -35,6 +39,12 @@ public class ELOCalculator
                 _ => players.Sum(x => x.Rating) * TeamFactor
             };
         }
+
+        return new MatchEloChange()
+        {
+            EloChange = ((int)Math.Round(changes.A) + (int)Math.Round(changes.B)) / 2,
+            PlayerIdsAndEloChange = playerIdsAndEloChange
+        };
     }
 
     /// <summary>
@@ -43,11 +53,13 @@ public class ELOCalculator
     /// <param name="playerA"> first player</param>
     /// <param name="playerB"> second player</param>
     /// <param name="score">Tuple with scores of the game</param>
-    public void UpdateRatings(PlayerEntity playerA, PlayerEntity playerB, (int A, int B) score)
+    /// <exception cref="ArgumentException"> Throws error if Team is empty</exception>
+    /// <returns>A model with the new ratings</returns>
+    public MatchEloChange GetRatings(PlayerEntity playerA, PlayerEntity playerB, (int A, int B) score)
     {
-        UpdateRatings([playerA], [playerB], score);
+        return GetRatings([playerA], [playerB], score);
     }
-    
+
     private (double, double) CalculateChange(double playerA, double playerB, (int scoreA, int scoreB) score)
     {
         int Outcome(int x) => (x > 0) ? 1 : 0;
@@ -58,7 +70,7 @@ public class ELOCalculator
 
         double changeA = W * K * (Outcome(score.scoreA - score.scoreB) - Expectation(QA, QB));
         double changeB = W * K * (Outcome(score.scoreB - score.scoreA) - Expectation(QB, QA));
-        
+
         double Expectation(double Q1, double Q2)
         {
             return Q1 / (Q1 + Q2);

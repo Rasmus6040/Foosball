@@ -1,6 +1,8 @@
 using BusinessLogic.Data.Contexts;
 using BusinessLogic.Repositories;
+using DTO.Data.Entities;
 using DTO.Data.Models;
+using ELOSystem;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -21,7 +23,18 @@ public class MatchController(IServiceProvider serviceProvider, EloSystemContext 
     {
         var serviceScope = serviceProvider.CreateScope();
         var matchRepository = serviceScope.ServiceProvider.GetRequiredService<MatchRepository>();
+        var playerRepository = serviceScope.ServiceProvider.GetRequiredService<PlayerRepository>();
+        var eloCalculator = serviceScope.ServiceProvider.GetRequiredService<EloCalculator>();
+        
+        List<PlayerEntity> teamAPlayers = playerRepository.Get(match.TeamA.PlayerIds);
+        List<PlayerEntity> teamBPlayers = playerRepository.Get(match.TeamB.PlayerIds);
+        var matchEloChange = eloCalculator.GetRatings(teamAPlayers, teamBPlayers, (match.TeamA.Score, match.TeamB.Score));
+        match.EloChange = matchEloChange.EloChange;
         await matchRepository.AddAsync(match);
+        foreach (var valueTuple in matchEloChange.PlayerIdsAndEloChange)
+        {
+            await playerRepository.UpdateEloAsync(valueTuple.Item1, valueTuple.Item2);
+        }
         return Ok();
     }
 }
