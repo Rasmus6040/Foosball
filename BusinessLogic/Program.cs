@@ -1,15 +1,44 @@
+using System.Text.Json.Serialization;
+using BusinessLogic.Data.Contexts;
+using BusinessLogic.Repositories;
+using DTO.Data;
+using Microsoft.AspNetCore.OData;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OData.ModelBuilder;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<MatchRepository>();
+
+builder.Services.AddDbContext<EloSystemContext>(options =>
+{
+    string? connectionString = builder.Configuration.GetConnectionString("EloSystemContext");
+    if (connectionString == null)
+    {
+        throw new InvalidOperationException("Connection string is null");
+    }
+
+    options.UseSqlite(connectionString, optionsBuilder =>
+        optionsBuilder.MigrationsAssembly("EloSystemAPI"));
+});
+
+
+var modelBuilder = new ODataConventionModelBuilder();
+modelBuilder.EntitySet<Match>(nameof(Match));
+builder.Services.AddControllers()
+    .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles)
+    .AddOData(
+    options => options
+        .EnableQueryFeatures()
+        .AddRouteComponents(
+            "odata/v4",
+            modelBuilder.GetEdmModel()));
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -18,6 +47,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseODataQueryRequest();
 app.UseAuthorization();
 
 app.MapControllers();

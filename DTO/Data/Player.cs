@@ -2,6 +2,7 @@ namespace DTO.Data;
 
 public class Player
 {
-    public required string Name { get; set; }
-    public int Rating { get; set; } = 1200;
+    public int Id { get; init; }
+    public required string Name { get; init; }
+    public int Rating { get; init; } = 1200;
 }
