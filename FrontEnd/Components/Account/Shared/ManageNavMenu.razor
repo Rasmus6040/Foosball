@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using Authentication.Data
+@using FrontEnd.Data
 
 @inject SignInManager<ApplicationUser> SignInManager
 
@@ -19,9 +19,9 @@
             <NavLink class="nav-link" href="Account/Manage/ExternalLogins">External logins</NavLink>
         </li>
     }
-    <li class="nav-item">
-        <NavLink class="nav-link" href="Account/Manage/TwoFactorFrontEnd">Two-factor authentication</NavLink>
-    </li>
+    @* <li class="nav-item"> *@
+    @*     <NavLink class="nav-link" href="Account/Manage/TwoFactorFrontEnd">Two-factor authentication</NavLink> *@
+    @* </li> *@
     <li class="nav-item">
         <NavLink class="nav-link" href="Account/Manage/PersonalData">Personal data</NavLink>
     </li>
