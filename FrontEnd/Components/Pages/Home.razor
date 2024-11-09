@@ -1,11 +1,12 @@
 ﻿@page "/"
 @using DTO.Data.Entities
+@using Microsoft.AspNetCore.Authorization
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Data
 @using FilterType = Syncfusion.Blazor.Grids.FilterType
 @rendermode InteractiveServer
-
+@attribute [Authorize]
 <PageTitle>Foosball</PageTitle>
 
 <SfGrid TValue="MatchEntity" ID="Grid" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
