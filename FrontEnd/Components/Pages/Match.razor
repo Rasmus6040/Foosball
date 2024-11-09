@@ -22,7 +22,7 @@
             <div class="team-images">
                 @foreach(PlayerEntity player in _redTeam)
                 {
-                    <img class="player-avatar" src=@player.Name alt="Red Team Player">
+                    <img class="player-avatar" src=@player.ImageUrl alt="Red Team Player">
                 }
                 @if (_redTeam.Count < 2)
                 {
@@ -39,7 +39,7 @@
             <div class="team-images">
                 @foreach(PlayerEntity player in _blueTeam)
                 {
-                <img class="player-avatar" src=@player.Name alt="Blue Team Player">
+                <img class="player-avatar" src=@player.ImageUrl alt="Blue Team Player">
                 }
                 @if (_blueTeam.Count < 2)
                 {
