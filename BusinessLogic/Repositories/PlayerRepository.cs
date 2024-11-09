@@ -33,4 +33,16 @@ public class PlayerRepository(EloSystemContext context)
     {
         return context.Players.Where(p => teamAPlayerIds.Contains(p.Id)).ToList();
     }
+
+    public async Task UpdateNameAsync(int id, string name)
+    {
+        var playerEntity = await context.Players.FindAsync(id);
+        if (playerEntity == null)
+        {
+            throw new ArgumentException("Player not found");
+        }
+        
+        playerEntity.Name = name;
+        await context.SaveChangesAsync();
+    }
 }

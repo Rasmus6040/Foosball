@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace BusinessLogic.Controllers;
 
@@ -26,14 +27,23 @@ public class MatchController(IServiceProvider serviceProvider, EloSystemContext 
         var playerRepository = serviceScope.ServiceProvider.GetRequiredService<PlayerRepository>();
         var eloCalculator = serviceScope.ServiceProvider.GetRequiredService<EloCalculator>();
         
-        List<PlayerEntity> teamAPlayers = playerRepository.Get(match.TeamA.PlayerIds);
-        List<PlayerEntity> teamBPlayers = playerRepository.Get(match.TeamB.PlayerIds);
-        var matchEloChange = eloCalculator.GetRatings(teamAPlayers, teamBPlayers, (match.TeamA.Score, match.TeamB.Score));
-        match.EloChange = matchEloChange.EloChange;
-        await matchRepository.AddAsync(match);
-        foreach (var valueTuple in matchEloChange.PlayerIdsAndEloChange)
+        try
         {
-            await playerRepository.UpdateEloAsync(valueTuple.Item1, valueTuple.Item2);
+            Log.Information("Adding match");
+            List<PlayerEntity> teamAPlayers = playerRepository.Get(match.TeamA.PlayerIds);
+            List<PlayerEntity> teamBPlayers = playerRepository.Get(match.TeamB.PlayerIds);
+            var matchEloChange =
+                eloCalculator.GetRatings(teamAPlayers, teamBPlayers, (match.TeamA.Score, match.TeamB.Score));
+            match.EloChange = matchEloChange.EloChange;
+            await matchRepository.AddAsync(match);
+            foreach (var valueTuple in matchEloChange.PlayerIdsAndEloChange)
+            {
+                await playerRepository.UpdateEloAsync(valueTuple.Item1, valueTuple.Item2);
+            }
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, e.Message);
         }
         return Ok();
     }
