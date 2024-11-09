@@ -2,11 +2,11 @@ namespace ELOSystem;
 
 public class Simulator
 {
-    private readonly ELOCalculator _eloCalculator = new();
+    private readonly EloCalculator _eloCalculator = new();
 
     private void CreateSimMatch(SimPlayer simA, SimPlayer simB, (int ScoreA, int ScoreB) scores)
     {
-        _eloCalculator.UpdateRatings(simA.Player, simB.Player, scores);
+        _eloCalculator.GetRatings(simA.Player, simB.Player, scores);
     }
     
     public List<SimPlayer> Simulate(int n, params double[] winRates)

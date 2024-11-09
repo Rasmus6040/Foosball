@@ -4,6 +4,7 @@ using BusinessLogic.Repositories;
 using DTO.Data;
 using DTO.Data.Entities;
 using DTO.Data.Models;
+using ELOSystem;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.ModelBuilder;
@@ -15,6 +16,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<MatchRepository>();
 builder.Services.AddScoped<PlayerRepository>();
+builder.Services.AddScoped<EloCalculator>();
 
 builder.Services.AddDbContext<EloSystemContext>(options =>
 {

@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using System.Text.Json;
-using Authentication.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -9,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using FrontEnd.Components.Account.Pages;
 using FrontEnd.Components.Account.Pages.Manage;
+using FrontEnd.Data;
 
 namespace Microsoft.AspNetCore.Routing;
 

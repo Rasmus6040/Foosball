@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Authentication.Components.Account;
-using Authentication.Data;
+using FrontEnd.Components.Account;
 using FrontEnd.Components;
+using FrontEnd.Data;
 using Serilog;
 using Syncfusion.Blazor;
 

@@ -45,7 +45,7 @@ public class EloSystemContext : DbContext
             int whichTeamToWin = random.Next(1, 3);
             int teamAScore = whichTeamToWin == 1 ? 5 : random.Next(0, 5);
             int teamBScore = whichTeamToWin == 2 ? 5 : random.Next(0, 5);
-            var isRanked = random.Next(0, 20) == 0;
+            var isRanked = random.Next(0, 20) != 0;
             matchList.Add(new MatchEntity()
             {
                 Id = i + 1,
@@ -64,7 +64,7 @@ public class EloSystemContext : DbContext
         for (int i = 1; i <= matchAmount; i++)
         {
             var playerIdsForMatch = playerList.Select(p => p.Id).ToList();
-            for (int teamNumber = 0; teamNumber <= 1; teamNumber++)
+            for (int teamNumber = 1; teamNumber <= 2; teamNumber++)
             {
                 int randomIndex = random.Next(playerIdsForMatch.Count);
                 int playerId = playerIdsForMatch[randomIndex];

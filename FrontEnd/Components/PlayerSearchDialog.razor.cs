@@ -1,3 +1,4 @@
+using DTO.Data.Entities;
 using DTO.Data.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -16,7 +17,7 @@ public partial class PlayerSearchDialog : ComponentBase
     public EventCallback<bool> VisibleChanged { get; set; }
     
     [Parameter]
-    public EventCallback<Player> PlayerSubmitted { get; set; }
+    public EventCallback<PlayerEntity> PlayerSubmitted { get; set; }
 
     private async Task CloseDialog()
     {
@@ -24,7 +25,7 @@ public partial class PlayerSearchDialog : ComponentBase
         await VisibleChanged.InvokeAsync(Visible);
     }
 
-    private Player? _selectedPlayer;
+    private PlayerEntity? _selectedPlayer;
     private void Enter(KeyboardEventArgs e)
     {
         if (_selectedPlayer is null) return; // TODO: Show tooltip, "Please select a player"
