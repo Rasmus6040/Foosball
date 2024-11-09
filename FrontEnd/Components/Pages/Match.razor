@@ -26,11 +26,13 @@
                 }
                 @if (_redTeam.Count < 2)
                 {
-                    <SfButton IconCss="e-btn-sb-icons e-add-icon" CssClass="e-small e-round" IsPrimary="true" @onclick="() => ShowDialog(false)"></SfButton> <!-- Add Player to Red Team -->
+                    <SfButton CssClass="add-player-button e-link" @onclick="() => ShowDialog(false)" IconCss="e-icons e-circle-add"></SfButton>
                 }
             </div> 
-            <label for="redScore">Red Score</label>
-            <SfNumericTextBox id="redScore" @bind-Value="_redScore" TValue="int" Min="0" Max="10" CssClass="score-input"/>
+            <div class="score">
+                <label for="redScore">Red Score</label>
+                <SfNumericTextBox id="redScore" @bind-Value="_redScore" TValue="int" Min="0" Max="10" CssClass="score-input"/>
+            </div>
         </div>
         <div class="blue-team">
             <h3>Blue team</h3>
@@ -41,11 +43,13 @@
                 }
                 @if (_blueTeam.Count < 2)
                 {
-                    <SfButton IconCss="e-btn-sb-icons e-add-icon" CssClass="e-small e-round" IsPrimary="true" @onclick="() => ShowDialog(true)"></SfButton> <!-- Add Player to Blue Team -->
+                    <SfButton CssClass="add-player-button e-link" @onclick="() => ShowDialog(true)" IconCss="e-icons e-circle-add"></SfButton>
                 }
             </div> 
-            <label for="blueScore">Blue Score</label>
-            <SfNumericTextBox id="blueScore" @bind-Value="_blueScore" TValue="int" Min="0" Max="10" CssClass="score-input"/>
+            <div class="score">
+                <label for="blueScore">Blue Score</label>
+                <SfNumericTextBox id="blueScore" @bind-Value="_blueScore" TValue="int" Min="0" Max="10" CssClass="score-input"/>
+            </div>
         </div>
     </div>
 
@@ -162,8 +166,29 @@
         justify-content: space-between;
     }
     
-    .player-avatar {
+    .player-avatar{
         width: 40%;
         max-width: 160px;
+        aspect-ratio : 1 / 1;
+    }
+
+    .add-player-button {
+        margin: auto;
+    }
+
+    .add-player-button span {
+        font-size: 60px !important;
+        color : #323539;
+    }
+    
+    .team-images {
+        min-height: 140px;
+    }
+    .red-team, .blue-team {
+        gap: 1rem;
+    }
+    
+    .score {
+        max-width: 50%;
     }
 </style>
