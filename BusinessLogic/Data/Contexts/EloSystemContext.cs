@@ -64,7 +64,7 @@ public class EloSystemContext : DbContext
         for (int i = 1; i <= matchAmount; i++)
         {
             var playerIdsForMatch = playerList.Select(p => p.Id).ToList();
-            for (int teamNumber = 0; teamNumber <= 1; teamNumber++)
+            for (int teamNumber = 1; teamNumber <= 2; teamNumber++)
             {
                 int randomIndex = random.Next(playerIdsForMatch.Count);
                 int playerId = playerIdsForMatch[randomIndex];
