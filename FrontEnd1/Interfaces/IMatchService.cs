@@ -1,5 +1,5 @@
 using DTO.Data;
-using Match = FrontEnd.Components.Pages.Match;
+using Match = FrontEnd1.Components.Pages.Match;
 
 namespace FrontEnd.Interfaces;
 

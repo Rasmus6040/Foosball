@@ -1,0 +1,58 @@
+﻿@page "/"
+@using DTO.Data.Entities
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Data
+@using FilterType = Syncfusion.Blazor.Grids.FilterType
+@rendermode InteractiveServer
+
+<PageTitle>Foosball</PageTitle>
+
+<SfGrid TValue="MatchEntity" ID="Grid" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+    <SfDataManager Url="@($"http://localhost:5081/odata/v4/{nameof(Match)}?$expand=playerMatches($expand=PlayerEntity)")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+    <GridPageSettings PageSize="8"></GridPageSettings>
+    <GridFilterSettings Type="FilterType.Menu"></GridFilterSettings>
+    <GridColumns>
+        <GridColumn Field="@nameof(MatchEntity.Date)">
+            <Template>
+                @(DateTimeOffset.FromUnixTimeSeconds(((MatchEntity)context).Date).DateTime.ToShortDateString())
+            </Template>
+        </GridColumn>
+        <GridColumn Field="@nameof(MatchEntity.Ranked)"></GridColumn>
+        <GridColumn Field="@nameof(MatchEntity.EloChange)" HeaderText="ELO change"></GridColumn>
+        <GridColumn Field="@nameof(MatchEntity.PlayerMatches)" HeaderText="Red Team"  AllowSorting="false" AllowFiltering="false">
+            <Template>
+                @{
+                    var match = (MatchEntity?)context;
+                    if (match is null)
+                    {
+                        <div></div>
+                    }
+                    else
+                    {
+                        var players = match.PlayerMatches.Where(x => x.Team == 1).Select(x => x.PlayerEntity);
+                        <div>@string.Join(", ", players.Select(x => x.Name))</div>   
+                    }
+                }
+            </Template>
+        </GridColumn>
+        <GridColumn Field="@nameof(MatchEntity.TeamAScore)" HeaderText="Red Score"></GridColumn>
+        <GridColumn Field="@nameof(MatchEntity.TeamBScore)" HeaderText="Blue Score"></GridColumn>
+        <GridColumn Field="@nameof(MatchEntity.PlayerMatches)" HeaderText="Blue Team" AllowSorting="false" AllowFiltering="false">
+            <Template>
+                @{
+                    var match = (MatchEntity?)context;
+                    if (match is null)
+                    {
+                        <div></div>
+                    }
+                    else
+                    {
+                        var players = match.PlayerMatches.Where(x => x.Team == 2).Select(x => x.PlayerEntity);
+                        <div>@string.Join(", ", players.Select(x => x.Name))</div>   
+                    }
+                }
+            </Template>
+        </GridColumn>
+    </GridColumns>
+</SfGrid>
