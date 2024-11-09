@@ -13,4 +13,8 @@
       <PackageReference Include="Syncfusion.Licensing" Version="27.1.58" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\DTO\DTO.csproj" />
+    </ItemGroup>
+
 </Project>

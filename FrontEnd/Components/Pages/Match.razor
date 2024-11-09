@@ -1,20 +1,66 @@
 ﻿@page "/match"
 @rendermode InteractiveServer
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
 
 <PageTitle>Counter</PageTitle>
 
-<h1>Counter</h1>
+<h1>New Match</h1>
 
-<p role="status">Current count: @currentCount</p>
+<MatchCard></MatchCard>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<div class="wrapper">
+    <SfNumericTextBox @bind-Value="_redScore" TValue="int" Min="0" Max="10" CssClass="score-input"></SfNumericTextBox>
+    <SfNumericTextBox @bind-Value="_blueScore" TValue="int" Min="0" Max="10" CssClass="score-input"></SfNumericTextBox>
+</div>
+
+<div>
+    <SfButton IsPrimary="true" @onclick="ValidateMatch">New Match</SfButton>
+</div>
+
+<p>@_matchResult</p>
+
 
 @code {
-    private int currentCount = 0;
+    private int _redScore;
+    private int _blueScore;
+    private string _matchResult = string.Empty;
 
-    private void IncrementCount()
+
+    private void ValidateMatch()
     {
-        currentCount++;
+        if (IsMatchValid())
+        {
+            _matchResult = _redScore > _blueScore ? "Red wins!" : "Blue wins!";
+            ResetScores();
+        }
+        else
+        {
+            _matchResult = "Keep playing until a valid score is reached.";
+        }
     }
 
+    private bool IsMatchValid()
+    {
+        return (_redScore >= 5 || _blueScore >= 5) && Math.Abs(_redScore - _blueScore) >= 2 || _redScore == 8 || _blueScore == 8; 
+    }
+
+    private void ResetScores()
+    {
+        _redScore = 0;
+        _blueScore = 0;
+    }
 }
+
+<style>
+    .wrapper {
+        max-width: 230px;
+        margin: 0 auto;
+        display: flex;
+    }
+    
+    .score-input {
+        width: 100%;
+        margin: 0 10px;
+    }
+</style>
