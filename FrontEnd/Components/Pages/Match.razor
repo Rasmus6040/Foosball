@@ -20,9 +20,9 @@
         <div class="red-team">
             <h3>Red team</h3>
             <div class="team-images">
-                @foreach(Player player in _redTeam)
+                @foreach(PlayerEntity player in _redTeam)
                 {
-                    <img class="player-avatar" src=@player.ImageUrl alt="Red Team Player">
+                    <img class="player-avatar" src=@player.Name alt="Red Team Player">
                 }
                 @if (_redTeam.Count < 2)
                 {
@@ -35,9 +35,9 @@
         <div class="blue-team">
             <h3>Blue team</h3>
             <div class="team-images">
-                @foreach(Player player in _blueTeam)
+                @foreach(PlayerEntity player in _blueTeam)
                 {
-                <img class="player-avatar" src=@player.ImageUrl alt="Blue Team Player">
+                <img class="player-avatar" src=@player.Name alt="Blue Team Player">
                 }
                 @if (_blueTeam.Count < 2)
                 {
@@ -72,11 +72,11 @@
     private readonly List<MatchEntity> _matches = [];
     private bool _isBlueDialogVisible;
     private bool _isRedDialogVisible;
-    private readonly List<Player> _redTeam = [];
-    private readonly List<Player> _blueTeam = [];
+    private readonly List<PlayerEntity> _redTeam = [];
+    private readonly List<PlayerEntity> _blueTeam = [];
     
-    private void AddPlayerToRedTeam(Player player) => _redTeam.Add(player);
-    private void AddPlayerToBlueTeam(Player player) => _blueTeam.Add(player);
+    private void AddPlayerToRedTeam(PlayerEntity player) => _redTeam.Add(player);
+    private void AddPlayerToBlueTeam(PlayerEntity player) => _blueTeam.Add(player);
     private void ShowDialog(bool isBlueTeam)
     {
         if (isBlueTeam)

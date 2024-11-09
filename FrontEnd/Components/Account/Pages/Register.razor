@@ -3,10 +3,11 @@
 @using System.ComponentModel.DataAnnotations
 @using System.Text
 @using System.Text.Encodings.Web
-@using Authentication.Components.Account
+@using FrontEnd.Components.Account
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
-@using Authentication.Data
+@using FrontEnd.Data
+@using Humanizer
 
 @inject UserManager<ApplicationUser> UserManager
 @inject IUserStore<ApplicationUser> UserStore
@@ -28,6 +29,11 @@
             <h2>Create a new account.</h2>
             <hr/>
             <ValidationSummary class="text-danger" role="alert"/>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.UserName" class="form-control" autocomplete="name" aria-required="true" placeholder="Charles"/>
+                <label for="name">User Name</label>
+                <ValidationMessage For="() => Input.UserName" class="text-danger"/>
+            </div>
             <div class="form-floating mb-3">
                 <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com"/>
                 <label for="email">Email</label>
@@ -68,6 +74,7 @@
     {
         var user = CreateUser();
 
+        user.Name = Input.UserName;
         await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
         var emailStore = GetEmailStore();
         await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -126,6 +133,10 @@
 
     private sealed class InputModel
     {
+        [Required]
+        [Display(Name = "Username")]
+        public string UserName { get; set; } = "";
+        
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

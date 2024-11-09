@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
-using Authentication.Data;
+using FrontEnd.Data;
 
-namespace Authentication.Components.Account;
+namespace FrontEnd.Components.Account;
 
 internal sealed class IdentityUserAccessor(
     UserManager<ApplicationUser> userManager,
