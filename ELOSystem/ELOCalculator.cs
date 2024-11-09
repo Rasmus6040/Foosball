@@ -1,15 +1,18 @@
 using System;
+using DTO.Data.Entities;
 
 namespace ELOSystem;
 
-public class ELOCalculator(int div, int k, int scoreWeight)
+public class ELOCalculator
 {
-    public void UpdateRating(SimPlayer a, SimPlayer b, (int a, int b) s)
+    private int k = 30;
+    private int scoreWeight = 10;
+    public void UpdateRating(PlayerEntity a, PlayerEntity b, (int a, int b) s)
     {
         Func<int, int> Outcome = x => (x > 0) ? 1 : 0;
 
-        double QA = Math.Pow(10, a.Rating / div);
-        double QB = Math.Pow(10, b.Rating / div);
+        double QA = Math.Pow(10, a.Rating / 400);
+        double QB = Math.Pow(10, b.Rating / 400);
 
         double WA = Weight(s.a, s.b);
         double WB = Weight(s.a, s.b);
@@ -17,8 +20,9 @@ public class ELOCalculator(int div, int k, int scoreWeight)
         double changeA = WA * k * (Outcome(s.a - s.b) - Expectation(QA, QB));
         double changeB = WB * k * (Outcome(s.b - s.a) - Expectation(QB, QA));
 
-        a.Rating =+ changeA;
-        b.Rating =+ changeB;
+        a.Rating += (int)changeA;
+        b.Rating += (int)changeB;
+        
 
         double Expectation(double Q1, double Q2)
         {
