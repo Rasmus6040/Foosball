@@ -4,7 +4,7 @@
 
 <PageTitle>Foosball</PageTitle>
 
-@if (latestMatches == null)
+@if (_latestMatches == null)
 {
 <p>
     <em>Loading...</em>
@@ -12,34 +12,7 @@
 }
 else
 {
-<table class="table">
-    <thead>
-    <tr>
-        <th>Date</th>
-        <th>Team Blue</th>
-        <th>Team Red</th>
-        <th>Goals Blue</th>
-        <th>Goals Red</th>
-        <th>Elo Change</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (Match match in latestMatches)
-    {
-    <tr>
-        <td>@match.DateOfMatch.ToShortDateString()</td>
-        <td>@(string.Join(", ", match.TeamBlue))</td>
-        <td>@(string.Join(", ", match.TeamRed))</td>
-        <td>@match.GoalsBlue</td>
-        <td>@match.GoalsRed</td>
-        <td>@match.EloDifference</td>
-    </tr>
-    }
-    </tbody>
-</table>
-}
-
-<SfGrid TValue="Match" ID="Grid" DataSource="latestMatches" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+<SfGrid TValue="Match" ID="Grid" DataSource="_latestMatches" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
     <GridPageSettings PageSize="8"></GridPageSettings>
     <GridFilterSettings Type="FilterType.Menu"></GridFilterSettings>
     <GridColumns>
@@ -59,9 +32,10 @@ else
         <GridColumn Field="@nameof(Match.EloDifference)" HeaderText="Elo Difference"></GridColumn>
     </GridColumns>
 </SfGrid>
+}
 
 @code {
-    private Match[]? latestMatches;
+    private Match[]? _latestMatches;
 
     protected override async Task OnInitializedAsync()
     {
@@ -70,23 +44,22 @@ else
     DateTime startDate = DateTime.Now;
     var players = new[] { "Rasmus", "Amstrup", "Mads", "Joachim", "Johan"};
     var random = new Random();
-    latestMatches = Enumerable.Range(1, 5).Select(index => new Match
+    _latestMatches = Enumerable.Range(1, 5).Select(index => new Match
         {
             DateOfMatch = startDate.AddDays(index),
-            TeamBlue = Enumerable.Range(0, random.Next(1, 3)).Select(x => players[random.Next(0,players.Length)]).ToList(),
-            TeamRed = Enumerable.Range(0, random.Next(1, 3)).Select(x => players[random.Next(0, players.Length)]).ToList(),
+            TeamBlue = Enumerable.Range(0, random.Next(1, 3)).Select(_ => players[random.Next(0,players.Length)]).ToList(),
+            TeamRed = Enumerable.Range(0, random.Next(1, 3)).Select(_ => players[random.Next(0, players.Length)]).ToList(),
             GoalsBlue = random.Next(0,10),
             GoalsRed = random.Next(0,10),
             EloDifference = random.Next(1,15) 
         }).ToArray();
-        
     }
 
     private class Match
     {
         public DateTime DateOfMatch { get; set; }
-        public List<string> TeamBlue { get; set; }
-        public List<string> TeamRed { get; set; }
+        public List<string> TeamBlue { get; init; } = [];
+        public List<string> TeamRed { get; init; } = [];
         public int GoalsBlue { get; set; }
         public int GoalsRed { get; set; }
         public double EloDifference { get; set; }
