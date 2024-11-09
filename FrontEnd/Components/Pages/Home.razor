@@ -20,7 +20,7 @@
         </GridColumn>
         <GridColumn Field="@nameof(MatchEntity.Ranked)"></GridColumn>
         <GridColumn Field="@nameof(MatchEntity.EloChange)" HeaderText="ELO change"></GridColumn>
-        <GridColumn Field="@nameof(MatchEntity.PlayerMatches)" HeaderText="Red Team">
+        <GridColumn Field="@nameof(MatchEntity.PlayerMatches)" HeaderText="Red Team"  AllowSorting="false" AllowFiltering="false">
             <Template>
                 @{
                     var match = (MatchEntity?)context;
@@ -36,7 +36,7 @@
                 }
             </Template>
         </GridColumn>
-        <GridColumn Field="@nameof(MatchEntity.TeamAScore)" HeaderText="Red Score" AllowSorting="false" AllowFiltering="false"></GridColumn>
+        <GridColumn Field="@nameof(MatchEntity.TeamAScore)" HeaderText="Red Score"></GridColumn>
         <GridColumn Field="@nameof(MatchEntity.TeamBScore)" HeaderText="Blue Score"></GridColumn>
         <GridColumn Field="@nameof(MatchEntity.PlayerMatches)" HeaderText="Blue Team" AllowSorting="false" AllowFiltering="false">
             <Template>

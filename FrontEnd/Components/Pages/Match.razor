@@ -1,12 +1,13 @@
 ﻿@page "/match"
 @rendermode InteractiveServer
+@using DTO.Data.Entities
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Buttons
 
 <PageTitle>Counter</PageTitle>
 
 <div class="match-list">
-    @foreach(DTO.Data.Match match in _matches)
+    @foreach(MatchEntity match in _matches)
     {
         <MatchCard Match="match" />
     }
@@ -40,7 +41,7 @@
     private int _blueScore;
     private bool _isRanked;
     private string _matchResult = string.Empty;
-    private readonly List<DTO.Data.Match> _matches = [];
+    private readonly List<MatchEntity> _matches = [];
 
 
     private void ValidateMatch()
@@ -70,7 +71,7 @@
 
     private void AddMatch(int redScore, int blueScore, bool isRanked)
     {
-        var match = new DTO.Data.Match
+        var match = new MatchEntity()
         {
             TeamAScore = redScore,
             TeamBScore = blueScore,
