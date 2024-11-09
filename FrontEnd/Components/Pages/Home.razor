@@ -1,5 +1,8 @@
 ﻿@page "/"
+@using Syncfusion.Blazor
 @using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Data
+@using FilterType = Syncfusion.Blazor.Grids.FilterType
 @rendermode InteractiveServer
 
 <PageTitle>Foosball</PageTitle>
@@ -12,26 +15,27 @@
 }
 else
 {
-<SfGrid TValue="Match" ID="Grid" DataSource="_latestMatches" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
-    <GridPageSettings PageSize="8"></GridPageSettings>
-    <GridFilterSettings Type="FilterType.Menu"></GridFilterSettings>
-    <GridColumns>
-        <GridColumn Field="@nameof(Match.DateOfMatch)" HeaderText="Date" Type="ColumnType.DateTime"></GridColumn>
-        <GridColumn Field="@nameof(Match.TeamBlue)" HeaderText="Team Blue">
-            <Template>
-                @string.Join(", ", ((Match)context).TeamBlue)
-            </Template>
-        </GridColumn>
-        <GridColumn Field="@nameof(Match.TeamRed)" HeaderText="Team Red">
-            <Template>
-                @string.Join(", ", ((Match)context).TeamRed)
-            </Template>
-        </GridColumn>
-        <GridColumn Field="@nameof(Match.GoalsBlue)" HeaderText="Goals Blue"></GridColumn>
-        <GridColumn Field="@nameof(Match.GoalsRed)" HeaderText="Goals Red"></GridColumn>
-        <GridColumn Field="@nameof(Match.EloDifference)" HeaderText="Elo Difference"></GridColumn>
-    </GridColumns>
-</SfGrid>
+    <SfGrid TValue="Match" ID="Grid" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+        <SfDataManager Url="@($"http://localhost:5081/odata/v4/{nameof(Match)}")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+        <GridPageSettings PageSize="8"></GridPageSettings>
+        <GridFilterSettings Type="FilterType.Menu"></GridFilterSettings>
+        <GridColumns>
+            <GridColumn Field="@nameof(Match.DateOfMatch)" HeaderText="Date" Type="ColumnType.DateTime"></GridColumn>
+            <GridColumn Field="@nameof(Match.TeamBlue)" HeaderText="Team Blue">
+                <Template>
+                    @string.Join(", ", ((Match)context).TeamBlue)
+                </Template>
+            </GridColumn>
+            <GridColumn Field="@nameof(Match.TeamRed)" HeaderText="Team Red">
+                <Template>
+                    @string.Join(", ", ((Match)context).TeamRed)
+                </Template>
+            </GridColumn>
+            <GridColumn Field="@nameof(Match.GoalsBlue)" HeaderText="Goals Blue"></GridColumn>
+            <GridColumn Field="@nameof(Match.GoalsRed)" HeaderText="Goals Red"></GridColumn>
+            <GridColumn Field="@nameof(Match.EloDifference)" HeaderText="Elo Difference"></GridColumn>
+        </GridColumns>
+    </SfGrid>
 }
 
 @code {
@@ -39,19 +43,19 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-    // Simulate asynchronous loading to demonstrate streaming rendering
-    await Task.Delay(500);
-    DateTime startDate = DateTime.Now;
-    var players = new[] { "Rasmus", "Amstrup", "Mads", "Joachim", "Johan"};
-    var random = new Random();
-    _latestMatches = Enumerable.Range(1, 5).Select(index => new Match
+        // Simulate asynchronous loading to demonstrate streaming rendering
+        await Task.Delay(500);
+        DateTime startDate = DateTime.Now;
+        var players = new[] { "Rasmus", "Amstrup", "Mads", "Joachim", "Johan" };
+        var random = new Random();
+        _latestMatches = Enumerable.Range(1, 5).Select(index => new Match
         {
             DateOfMatch = startDate.AddDays(index),
-            TeamBlue = Enumerable.Range(0, random.Next(1, 3)).Select(_ => players[random.Next(0,players.Length)]).ToList(),
+            TeamBlue = Enumerable.Range(0, random.Next(1, 3)).Select(_ => players[random.Next(0, players.Length)]).ToList(),
             TeamRed = Enumerable.Range(0, random.Next(1, 3)).Select(_ => players[random.Next(0, players.Length)]).ToList(),
-            GoalsBlue = random.Next(0,10),
-            GoalsRed = random.Next(0,10),
-            EloDifference = random.Next(1,15) 
+            GoalsBlue = random.Next(0, 10),
+            GoalsRed = random.Next(0, 10),
+            EloDifference = random.Next(1, 15)
         }).ToArray();
     }
 

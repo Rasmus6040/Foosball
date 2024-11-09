@@ -5,3 +5,5 @@ FrontEnd/bin
 FrontEnd/obj
 BusinessLogic/obj
 DTO/obj
+BusinessLogic/bin
+DTO/bin
