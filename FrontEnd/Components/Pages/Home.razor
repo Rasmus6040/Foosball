@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using DTO.Data.Entities
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Data
@@ -7,65 +8,51 @@
 
 <PageTitle>Foosball</PageTitle>
 
-@if (_latestMatches == null)
-{
-<p>
-    <em>Loading...</em>
-</p>
-}
-else
-{
-    <SfGrid TValue="Match" ID="Grid" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
-        <SfDataManager Url="@($"http://localhost:5081/odata/v4/{nameof(Match)}")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-        <GridPageSettings PageSize="8"></GridPageSettings>
-        <GridFilterSettings Type="FilterType.Menu"></GridFilterSettings>
-        <GridColumns>
-            <GridColumn Field="@nameof(Match.DateOfMatch)" HeaderText="Date" Type="ColumnType.DateTime"></GridColumn>
-            <GridColumn Field="@nameof(Match.TeamBlue)" HeaderText="Team Blue">
-                <Template>
-                    @string.Join(", ", ((Match)context).TeamBlue)
-                </Template>
-            </GridColumn>
-            <GridColumn Field="@nameof(Match.TeamRed)" HeaderText="Team Red">
-                <Template>
-                    @string.Join(", ", ((Match)context).TeamRed)
-                </Template>
-            </GridColumn>
-            <GridColumn Field="@nameof(Match.GoalsBlue)" HeaderText="Goals Blue"></GridColumn>
-            <GridColumn Field="@nameof(Match.GoalsRed)" HeaderText="Goals Red"></GridColumn>
-            <GridColumn Field="@nameof(Match.EloDifference)" HeaderText="Elo Difference"></GridColumn>
-        </GridColumns>
-    </SfGrid>
-}
-
-@code {
-    private Match[]? _latestMatches;
-
-    protected override async Task OnInitializedAsync()
-    {
-        // Simulate asynchronous loading to demonstrate streaming rendering
-        await Task.Delay(500);
-        DateTime startDate = DateTime.Now;
-        var players = new[] { "Rasmus", "Amstrup", "Mads", "Joachim", "Johan" };
-        var random = new Random();
-        _latestMatches = Enumerable.Range(1, 5).Select(index => new Match
-        {
-            DateOfMatch = startDate.AddDays(index),
-            TeamBlue = Enumerable.Range(0, random.Next(1, 3)).Select(_ => players[random.Next(0, players.Length)]).ToList(),
-            TeamRed = Enumerable.Range(0, random.Next(1, 3)).Select(_ => players[random.Next(0, players.Length)]).ToList(),
-            GoalsBlue = random.Next(0, 10),
-            GoalsRed = random.Next(0, 10),
-            EloDifference = random.Next(1, 15)
-        }).ToArray();
-    }
-
-    private class Match
-    {
-        public DateTime DateOfMatch { get; set; }
-        public List<string> TeamBlue { get; init; } = [];
-        public List<string> TeamRed { get; init; } = [];
-        public int GoalsBlue { get; set; }
-        public int GoalsRed { get; set; }
-        public double EloDifference { get; set; }
-    }
-}
+<SfGrid TValue="MatchEntity" ID="Grid" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
+    <SfDataManager Url="@($"http://localhost:5081/odata/v4/{nameof(Match)}?$expand=playerMatches($expand=PlayerEntity)")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+    <GridPageSettings PageSize="8"></GridPageSettings>
+    <GridFilterSettings Type="FilterType.Menu"></GridFilterSettings>
+    <GridColumns>
+        <GridColumn Field="@nameof(MatchEntity.Date)">
+            <Template>
+                @(DateTimeOffset.FromUnixTimeSeconds(((MatchEntity)context).Date).DateTime.ToShortDateString())
+            </Template>
+        </GridColumn>
+        <GridColumn Field="@nameof(MatchEntity.Ranked)"></GridColumn>
+        <GridColumn Field="@nameof(MatchEntity.EloChange)" HeaderText="ELO change"></GridColumn>
+        <GridColumn Field="@nameof(MatchEntity.PlayerMatches)" HeaderText="Red Team">
+            <Template>
+                @{
+                    var match = (MatchEntity?)context;
+                    if (match is null)
+                    {
+                        <div></div>
+                    }
+                    else
+                    {
+                        var players = match.PlayerMatches.Where(x => x.Team == 1).Select(x => x.PlayerEntity);
+                        <div>@string.Join(", ", players.Select(x => x.Name))</div>   
+                    }
+                }
+            </Template>
+        </GridColumn>
+        <GridColumn Field="@nameof(MatchEntity.TeamAScore)" HeaderText="Red Score" AllowSorting="false" AllowFiltering="false"></GridColumn>
+        <GridColumn Field="@nameof(MatchEntity.TeamBScore)" HeaderText="Blue Score"></GridColumn>
+        <GridColumn Field="@nameof(MatchEntity.PlayerMatches)" HeaderText="Blue Team" AllowSorting="false" AllowFiltering="false">
+            <Template>
+                @{
+                    var match = (MatchEntity?)context;
+                    if (match is null)
+                    {
+                        <div></div>
+                    }
+                    else
+                    {
+                        var players = match.PlayerMatches.Where(x => x.Team == 2).Select(x => x.PlayerEntity);
+                        <div>@string.Join(", ", players.Select(x => x.Name))</div>   
+                    }
+                }
+            </Template>
+        </GridColumn>
+    </GridColumns>
+</SfGrid>

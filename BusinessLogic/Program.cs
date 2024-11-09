@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using BusinessLogic.Data.Contexts;
 using BusinessLogic.Repositories;
 using DTO.Data;
+using DTO.Data.Entities;
 using DTO.Data.Models;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
@@ -29,8 +30,9 @@ builder.Services.AddDbContext<EloSystemContext>(options =>
 
 
 var modelBuilder = new ODataConventionModelBuilder();
-modelBuilder.EntitySet<Match>(nameof(Match));
-modelBuilder.EntitySet<Player>(nameof(Player));
+modelBuilder.EntitySet<MatchEntity>(nameof(Match));
+modelBuilder.EntitySet<PlayerEntity>(nameof(Player));
+modelBuilder.EntitySet<PlayerMatchEntity>("PlayerMatches");
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles)
     .AddOData(
