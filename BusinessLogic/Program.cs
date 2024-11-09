@@ -5,12 +5,12 @@ using DTO.Data;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.ModelBuilder;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 builder.Services.AddScoped<MatchRepository>();
 
 builder.Services.AddDbContext<EloSystemContext>(options =>
@@ -38,7 +38,11 @@ builder.Services.AddControllers()
             modelBuilder.GetEdmModel()));
 
 var app = builder.Build();
-
+Log.Logger = new LoggerConfiguration().Enrich.FromLogContext()
+    .Enrich.WithProperty("ApplicationName", "BusinessLogic")
+    .WriteTo.Console(outputTemplate: "{Timestamp:HH:mm:ss} [{Level}] {ApplicationName} {UserId} {Message:lj}{NewLine}{Exception}")
+    .WriteTo.File("logs/businessLogic-.txt", rollingInterval: RollingInterval.Hour, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] [{ApplicationName}] [{UserId}] {Message:lj}{NewLine}{Exception}")
+    .CreateLogger();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
