@@ -30,16 +30,19 @@ public class MatchController(IServiceProvider serviceProvider, EloSystemContext 
         try
         {
             Log.Information("Adding match");
-            List<PlayerEntity> teamAPlayers = playerRepository.Get(match.TeamA.PlayerIds);
-            List<PlayerEntity> teamBPlayers = playerRepository.Get(match.TeamB.PlayerIds);
-            var matchEloChange =
-                eloCalculator.GetRatings(teamAPlayers, teamBPlayers, (match.TeamA.Score, match.TeamB.Score));
-            match.EloChange = matchEloChange.EloChange;
-            await matchRepository.AddAsync(match);
-            foreach (var valueTuple in matchEloChange.PlayerIdsAndEloChange)
+            if (match.Ranked)
             {
-                await playerRepository.UpdateEloAsync(valueTuple.Item1, valueTuple.Item2);
+                List<PlayerEntity> teamAPlayers = playerRepository.Get(match.TeamA.PlayerIds);
+                List<PlayerEntity> teamBPlayers = playerRepository.Get(match.TeamB.PlayerIds);
+                var matchEloChange =
+                    eloCalculator.GetRatings(teamAPlayers, teamBPlayers, (match.TeamA.Score, match.TeamB.Score));
+                match.EloChange = matchEloChange.EloChange;
+                foreach (var valueTuple in matchEloChange.PlayerIdsAndEloChange)
+                {
+                    await playerRepository.UpdateEloAsync(valueTuple.Item1, valueTuple.Item2);
+                }
             }
+            await matchRepository.AddAsync(match);
         }
         catch (Exception e)
         {
