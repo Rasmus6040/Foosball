@@ -5,26 +5,42 @@
 
 <PageTitle>Counter</PageTitle>
 
-<h1>New Match</h1>
-
-<MatchCard></MatchCard>
-
-<div class="wrapper">
-    <SfNumericTextBox @bind-Value="_redScore" TValue="int" Min="0" Max="10" CssClass="score-input"></SfNumericTextBox>
-    <SfNumericTextBox @bind-Value="_blueScore" TValue="int" Min="0" Max="10" CssClass="score-input"></SfNumericTextBox>
+<div class="match-list">
+    @foreach(DTO.Data.Match match in _matches)
+    {
+        <MatchCard Match="match" />
+    }
 </div>
 
-<div>
-    <SfButton IsPrimary="true" @onclick="ValidateMatch">New Match</SfButton>
+<div class="match-form">
+    <div class="score-wrapper">
+        <label for="redScore">Red Score</label>
+        <SfNumericTextBox id="redScore" @bind-Value="_redScore" TValue="int" Min="0" Max="10" CssClass="score-input" />
+
+        <label for="blueScore">Blue Score</label>
+        <SfNumericTextBox id="blueScore" @bind-Value="_blueScore" TValue="int" Min="0" Max="10" CssClass="score-input" />
+    </div>
+
+    <div class="switch-wrapper">
+        <label for="rankedSwitch">Ranked Match</label>
+        <SfSwitch id="rankedSwitch" @bind-Checked="_isRanked" />
+    </div>
+
+    <div class="button-wrapper">
+        <SfButton IsPrimary="true" @onclick="ValidateMatch">New Match</SfButton>
+    </div>
+
+    <p>@_matchResult</p>
 </div>
 
-<p>@_matchResult</p>
 
 
 @code {
     private int _redScore;
     private int _blueScore;
+    private bool _isRanked;
     private string _matchResult = string.Empty;
+    private readonly List<DTO.Data.Match> _matches = [];
 
 
     private void ValidateMatch()
@@ -32,6 +48,7 @@
         if (IsMatchValid())
         {
             _matchResult = _redScore > _blueScore ? "Red wins!" : "Blue wins!";
+            AddMatch(_redScore, _blueScore, _isRanked);
             ResetScores();
         }
         else
@@ -50,17 +67,32 @@
         _redScore = 0;
         _blueScore = 0;
     }
+
+    private void AddMatch(int redScore, int blueScore, bool isRanked)
+    {
+        var match = new DTO.Data.Match
+        {
+            TeamAScore = redScore,
+            TeamBScore = blueScore,
+            Ranked = isRanked,
+            Date = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+        };
+        _matches.Add(match);
+    }
 }
 
 <style>
-    .wrapper {
-        max-width: 230px;
-        margin: 0 auto;
+    .match-form {
         display: flex;
+        flex-direction: column;
+        gap: 1rem;
     }
-    
-    .score-input {
-        width: 100%;
-        margin: 0 10px;
+    .score-wrapper {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+    .switch-wrapper, .button-wrapper {
+        margin-top: 1rem;
     }
 </style>
