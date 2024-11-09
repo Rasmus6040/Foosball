@@ -11,7 +11,9 @@ public class PlayerRepository(EloSystemContext context)
         var playerEntity = new PlayerEntity()
         {
             Name = player.Name,
-            Rating = player.Rating
+            Rating = player.Rating,
+            CreatedAt = player.CreatedAt,
+            ImageUrl = player.ImageUrl
         };
         await context.Players.AddAsync(playerEntity);
         await context.SaveChangesAsync();
