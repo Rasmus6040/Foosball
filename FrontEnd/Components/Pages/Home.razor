@@ -1,11 +1,12 @@
 ﻿@page "/"
 @using DTO.Data.Entities
+@using Microsoft.AspNetCore.Authorization
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Data
 @using FilterType = Syncfusion.Blazor.Grids.FilterType
 @rendermode InteractiveServer
-
+@attribute [Authorize]
 <PageTitle>Foosball</PageTitle>
 
 <SfGrid TValue="MatchEntity" ID="Grid" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
@@ -20,7 +21,7 @@
         </GridColumn>
         <GridColumn Field="@nameof(MatchEntity.Ranked)"></GridColumn>
         <GridColumn Field="@nameof(MatchEntity.EloChange)" HeaderText="ELO change"></GridColumn>
-        <GridColumn Field="@nameof(MatchEntity.PlayerMatches)" HeaderText="Red Team">
+        <GridColumn Field="@nameof(MatchEntity.PlayerMatches)" HeaderText="Red Team"  AllowSorting="false" AllowFiltering="false">
             <Template>
                 @{
                     var match = (MatchEntity?)context;
@@ -36,7 +37,7 @@
                 }
             </Template>
         </GridColumn>
-        <GridColumn Field="@nameof(MatchEntity.TeamAScore)" HeaderText="Red Score" AllowSorting="false" AllowFiltering="false"></GridColumn>
+        <GridColumn Field="@nameof(MatchEntity.TeamAScore)" HeaderText="Red Score"></GridColumn>
         <GridColumn Field="@nameof(MatchEntity.TeamBScore)" HeaderText="Blue Score"></GridColumn>
         <GridColumn Field="@nameof(MatchEntity.PlayerMatches)" HeaderText="Blue Team" AllowSorting="false" AllowFiltering="false">
             <Template>

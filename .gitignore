@@ -9,6 +9,10 @@ Migrations
 DTO/obj
 BusinessLogic/bin
 DTO/bin
+BusinessLogic/EloSystem.db-shm
+BusinessLogic/EloSystem.db-wal
+bin
+obj
 Foosball.slnx.DotSettings.user
 FrontEnd/logs/
 .idea

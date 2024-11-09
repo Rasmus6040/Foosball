@@ -1,7 +1,7 @@
-using FrontEnd.Components.Pages;
 using FrontEnd.Interfaces;
+using FrontEnd1.Components.Pages;
 
-namespace FrontEnd.Services;
+namespace FrontEnd1.Services;
 
 public class MatchService : IMatchService
 {

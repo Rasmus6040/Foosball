@@ -1,10 +1,11 @@
 ﻿@page "/match"
 @rendermode InteractiveServer
 @using DTO.Data.Entities
+@using Microsoft.AspNetCore.Authorization
 @using DTO.Data.Models
 @using Syncfusion.Blazor.Inputs
 @using Syncfusion.Blazor.Buttons
-
+@attribute [Authorize]
 <PageTitle>Counter</PageTitle>
 
 <div class="match-list">
