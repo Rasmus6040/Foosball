@@ -4,6 +4,8 @@
 FrontEnd/bin
 FrontEnd/obj
 BusinessLogic/obj
+BusinessLogic/bin
+Migrations
 DTO/obj
 BusinessLogic/bin
 DTO/bin
