@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace BusinessLogic.Data.Entities;
+namespace DTO.Data.Entities;
 
 public class PlayerEntity
 {

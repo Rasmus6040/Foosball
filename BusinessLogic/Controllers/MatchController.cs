@@ -1,19 +1,17 @@
 using BusinessLogic.Data.Contexts;
-using BusinessLogic.Data.Entities;
 using BusinessLogic.Repositories;
-using DTO.Data;
+using DTO.Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogic.Controllers;
 
-[ApiController]
-[Route("[controller]")]
-public class MatchController(EloSystemContext context, IServiceProvider serviceProvider) : ControllerBase
+public class MatchController(IServiceProvider serviceProvider, EloSystemContext context) : ODataController
 {
-    
-    [HttpGet(Match.GetMatches)]
-    public IActionResult GetMatches()
+    [EnableQuery]
+    public IActionResult Get()
     {
         return Ok(context.Matches.AsNoTracking());
     }
@@ -24,25 +22,6 @@ public class MatchController(EloSystemContext context, IServiceProvider serviceP
         var serviceScope = serviceProvider.CreateScope();
         var matchRepository = serviceScope.ServiceProvider.GetRequiredService<MatchRepository>();
         await matchRepository.AddAsync(match);
-        return Ok();
-    }
-    
-    [HttpGet("/players")]
-    public IActionResult GetPlayers()
-    {
-        return Ok(context.Players.AsNoTracking());
-    }
-    
-    [HttpPost("/players")]
-    public async Task<IActionResult> AddPlayer(Player player)
-    {
-        var playerEntity = new PlayerEntity()
-        {
-            Name = player.Name, 
-            Rating = player.Rating
-        };
-        await context.Players.AddAsync(playerEntity);
-        await context.SaveChangesAsync();
         return Ok();
     }
 }

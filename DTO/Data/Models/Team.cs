@@ -1,4 +1,4 @@
-namespace DTO.Data;
+namespace DTO.Data.Models;
 
 public class Team
 {

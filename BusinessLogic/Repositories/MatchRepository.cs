@@ -1,6 +1,7 @@
 using BusinessLogic.Data.Contexts;
-using BusinessLogic.Data.Entities;
 using DTO.Data;
+using DTO.Data.Entities;
+using DTO.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogic.Repositories;

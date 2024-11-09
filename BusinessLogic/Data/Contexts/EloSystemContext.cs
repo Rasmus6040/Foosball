@@ -1,4 +1,4 @@
-using BusinessLogic.Data.Entities;
+using DTO.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogic.Data.Contexts;
