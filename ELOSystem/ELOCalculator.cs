@@ -1,3 +1,5 @@
+using System;
+
 namespace ELOSystem;
 
 public class ELOCalculator(int div, int k, int scoreWeight)

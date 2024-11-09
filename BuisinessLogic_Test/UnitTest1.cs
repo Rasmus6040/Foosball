@@ -1,3 +1,5 @@
+using NUnit.Framework;
+
 namespace BuisinessLogic_Test;
 
 public class Tests
