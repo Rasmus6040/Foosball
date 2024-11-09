@@ -51,7 +51,7 @@ public class EloSystemContext : DbContext
                 Id = i + 1,
                 TeamAScore = teamAScore,
                 TeamBScore = teamBScore,
-                EloChange = random.Next(8, 13),
+                EloChange = isRanked ? random.Next(8, 13) : 0,
                 Ranked = isRanked
             });
         }
