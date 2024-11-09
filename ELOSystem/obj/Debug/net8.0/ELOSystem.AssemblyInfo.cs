@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ELOSystem")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+73f32b19b7e20378d6c0851f6c5931d67527cb04")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+33463aa0362605474404a55f7efaaa1c3ecc2e4e")]
 [assembly: System.Reflection.AssemblyProductAttribute("ELOSystem")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ELOSystem")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
