@@ -30,9 +30,9 @@
             <hr/>
             <ValidationSummary class="text-danger" role="alert"/>
             <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.UserName" class="form-control" autocomplete="name" aria-required="true" placeholder="Charles"/>
-                <label for="name">User Name</label>
-                <ValidationMessage For="() => Input.UserName" class="text-danger"/>
+                <InputText @bind-Value="Input.DisplayName" class="form-control" autocomplete="name" aria-required="true" placeholder="Charles"/>
+                <label for="name">Display name</label>
+                <ValidationMessage For="() => Input.DisplayName" class="text-danger"/>
             </div>
             <div class="form-floating mb-3">
                 <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com"/>
@@ -74,7 +74,7 @@
     {
         var user = CreateUser();
 
-        user.Name = Input.UserName;
+        user.Name = Input.DisplayName;
         await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
         var emailStore = GetEmailStore();
         await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -134,8 +134,8 @@
     private sealed class InputModel
     {
         [Required]
-        [Display(Name = "Username")]
-        public string UserName { get; set; } = "";
+        [Display(Name = "Display name")]
+        public string DisplayName { get; set; } = "";
         
         [Required]
         [EmailAddress]

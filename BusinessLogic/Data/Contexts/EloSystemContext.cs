@@ -28,11 +28,11 @@ public class EloSystemContext : DbContext
     {
         var playerList = new List<PlayerEntity>()
         {
-            new PlayerEntity() { Id = 1, Name = "Johan" },
-            new PlayerEntity() { Id = 2, Name = "Rasmus" },
-            new PlayerEntity() { Id = 3, Name = "Joachim" },
-            new PlayerEntity() { Id = 4, Name = "Christian" },
-            new PlayerEntity() { Id = 5, Name = "Mads" }
+            new PlayerEntity() { Id = 1, DisplayName = "Johan" },
+            new PlayerEntity() { Id = 2, DisplayName = "Rasmus" },
+            new PlayerEntity() { Id = 3, DisplayName = "Joachim" },
+            new PlayerEntity() { Id = 4, DisplayName = "Christian" },
+            new PlayerEntity() { Id = 5, DisplayName = "Mads" }
         };
         modelBuilder.Entity<PlayerEntity>()
             .HasData(playerList);

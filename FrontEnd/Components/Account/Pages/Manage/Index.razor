@@ -21,8 +21,8 @@
             <DataAnnotationsValidator/>
             <ValidationSummary class="text-danger" role="alert"/>
             <div class="form-floating mb-3">
-                <input type="text" value="@username" class="form-control" placeholder="Please choose your username." disabled/>
-                <label for="username" class="form-label">Username</label>
+                <input type="text" value="@displayName" class="form-control" placeholder="Please choose your display name." disabled/>
+                <label for="username" class="form-label">Display Name</label>
             </div>
             <div class="form-floating mb-3">
                 <InputText @bind-Value="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number."/>
@@ -36,7 +36,7 @@
 
 @code {
     private ApplicationUser user = default!;
-    private string? username;
+    private string? displayName;
     private string? phoneNumber;
 
     [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
@@ -46,7 +46,7 @@
     protected override async Task OnInitializedAsync()
     {
         user = await UserAccessor.GetRequiredUserAsync(HttpContext);
-        username = user.Name; 
+        displayName = user.Name; 
             //await UserManager.GetUserNameAsync(user);
         phoneNumber = await UserManager.GetPhoneNumberAsync(user);
 

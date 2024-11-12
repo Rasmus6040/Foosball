@@ -23,7 +23,7 @@ public class SimPlayer
         
         Player = new PlayerEntity
         {
-            Name = "tester",
+            DisplayName = "tester",
         };
         // Set the sim rating to the same as the 
         Rating = Player.Rating;

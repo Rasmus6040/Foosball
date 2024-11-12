@@ -11,7 +11,7 @@
         <Content>
             <SfAutoComplete TValue="PlayerEntity" TItem="PlayerEntity" Placeholder="e.g. John Doe" @bind-Value="@_selectedPlayer" @onkeydown="@Enter">
                 <SfDataManager Url=@($"https://localhost:7078/odata/v4/{nameof(Player)}") Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
-                <AutoCompleteFieldSettings Text="@(nameof(PlayerEntity.Name))" Value="@(nameof(PlayerEntity.Name))"/>
+                <AutoCompleteFieldSettings Text="@(nameof(PlayerEntity.DisplayName))" Value="@(nameof(PlayerEntity.DisplayName))"/>
             </SfAutoComplete>
         </Content>
     </DialogTemplates>

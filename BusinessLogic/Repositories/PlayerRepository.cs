@@ -10,7 +10,7 @@ public class PlayerRepository(EloSystemContext context)
     {
         var playerEntity = new PlayerEntity()
         {
-            Name = player.Name,
+            DisplayName = player.DisplayName,
             Rating = player.Rating,
             CreatedAt = player.CreatedAt,
             ImageUrl = player.ImageUrl
@@ -44,7 +44,7 @@ public class PlayerRepository(EloSystemContext context)
             throw new ArgumentException("Player not found");
         }
         
-        playerEntity.Name = name;
+        playerEntity.DisplayName = name;
         await context.SaveChangesAsync();
     }
 }

@@ -24,7 +24,7 @@ public class PlayerController(IServiceProvider serviceProvider, EloSystemContext
         var playerRepository = serviceScope.ServiceProvider.GetRequiredService<PlayerRepository>();
         try
         {
-            Log.Information("Adding player with name: {Name}", player.Name);
+            Log.Information("Adding player with name: {DisplayName}", player.DisplayName);
             await playerRepository.AddAsync(player);
         }
         catch (Exception e)
@@ -40,7 +40,7 @@ public class PlayerController(IServiceProvider serviceProvider, EloSystemContext
         var playerRepository = serviceScope.ServiceProvider.GetRequiredService<PlayerRepository>();
         try
         {
-            Log.Information("Updating player with id: {Id} to name: {Name}", id, name);
+            Log.Information("Updating player with id: {Id} to name: {DisplayName}", id, name);
             await playerRepository.UpdateNameAsync(id, name);
         }
         catch (Exception e)
