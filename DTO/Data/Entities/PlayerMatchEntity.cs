@@ -13,6 +13,6 @@ public class PlayerMatchEntity
     public int MatchId { get; set; }
     public int Team { get; set; }
     
-    public MatchEntity MatchEntity { get; set; }
-    public PlayerEntity PlayerEntity { get; set; }
+    public MatchEntity MatchEntity { get; set; } = null!;
+    public PlayerEntity PlayerEntity { get; set; } = null!;
 }

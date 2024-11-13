@@ -11,6 +11,6 @@ public class MatchEntity
     public bool Ranked { get; set; }
     public int EloChange { get; set; }
     public long Date { get; set; } = DateTimeOffset.Now.ToUnixTimeSeconds();
-    
-    public virtual ICollection<PlayerMatchEntity> PlayerMatches { get; set; }
+
+    public virtual ICollection<PlayerMatchEntity> PlayerMatches { get; set; } = [];
 }

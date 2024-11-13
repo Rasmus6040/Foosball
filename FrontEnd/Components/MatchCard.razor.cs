@@ -1,6 +1,5 @@
 using DTO.Data.Entities;
 using Microsoft.AspNetCore.Components;
-using DTO.Data.Entities;
 
 namespace FrontEnd.Components;
 
