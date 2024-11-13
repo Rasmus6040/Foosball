@@ -7,6 +7,5 @@ public class Match
     public required Team TeamA { get; init; }
     public required Team TeamB { get; init; }
     public bool Ranked { get; init; }
-    public int EloChange { get; set; }
     public long Date { get; init; } = DateTimeOffset.Now.ToUnixTimeSeconds();
 }

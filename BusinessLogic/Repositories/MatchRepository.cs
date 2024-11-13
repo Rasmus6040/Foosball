@@ -7,7 +7,7 @@ namespace BusinessLogic.Repositories;
 public class MatchRepository(EloSystemContext context)
 {
     
-    public async Task AddAsync(Match match)
+    public async Task AddAsync(Match match, int eloChange)
     {
         using var transaction = await context.Database.BeginTransactionAsync();
 
@@ -17,7 +17,7 @@ public class MatchRepository(EloSystemContext context)
             {
                 TeamAScore = match.TeamA.Score,
                 TeamBScore = match.TeamB.Score,
-                EloChange = match.EloChange,
+                EloChange = eloChange,
                 Ranked = match.Ranked,
                 Date = match.Date
             };
