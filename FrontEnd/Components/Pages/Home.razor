@@ -1,16 +1,18 @@
 ﻿@page "/"
 @using DTO.Data.Entities
+@using FrontEnd.Services
 @using Microsoft.AspNetCore.Authorization
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Data
 @using FilterType = Syncfusion.Blazor.Grids.FilterType
+@inject AppSettingsService AppSettingsService
 @rendermode InteractiveServer
 @attribute [Authorize]
 <PageTitle>Foosball</PageTitle>
 
 <SfGrid TValue="MatchEntity" ID="Grid" AllowSorting="true" AllowFiltering="true" AllowPaging="true">
-    <SfDataManager Url="@($"http://localhost:5081/odata/v4/{nameof(Match)}?$expand=playerMatches($expand=PlayerEntity)")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+    <SfDataManager Url="@($"{AppSettingsService.GetODataUrl()}{nameof(Match)}?$expand=playerMatches($expand=PlayerEntity)")" Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
     <GridPageSettings PageSize="8"></GridPageSettings>
     <GridFilterSettings Type="FilterType.Menu"></GridFilterSettings>
     <GridColumns>

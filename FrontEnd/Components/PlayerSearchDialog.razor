@@ -1,16 +1,18 @@
 @using DTO.Data.Entities
 @using DTO.Data.Models
+@using FrontEnd.Services
 @using Serilog
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Popups
 @using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Data
+@inject AppSettingsService AppSettingsService
 <SfDialog Width="500px" ShowCloseIcon="true" @bind-Visible="Visible">
     <DialogTemplates>
         <Header> <h1>Pick a Player for @( BlueTeam ? "Blue Team" : "Red Team")</h1> </Header>
         <Content>
             <SfAutoComplete TValue="PlayerEntity" TItem="PlayerEntity" Placeholder="e.g. John Doe" @bind-Value="@_selectedPlayer" @onkeydown="@Enter">
-                <SfDataManager Url=@($"https://localhost:7078/odata/v4/{nameof(Player)}") Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
+                <SfDataManager Url=@($"{AppSettingsService.GetODataUrl()}{nameof(Player)}") Adaptor="Adaptors.ODataV4Adaptor"></SfDataManager>
                 <AutoCompleteFieldSettings Text="@(nameof(PlayerEntity.DisplayName))" Value="@(nameof(PlayerEntity.DisplayName))"/>
             </SfAutoComplete>
         </Content>

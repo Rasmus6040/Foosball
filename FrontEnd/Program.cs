@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using FrontEnd.Components.Account;
 using FrontEnd.Components;
 using FrontEnd.Data;
+using FrontEnd.Services;
 using Serilog;
 using Syncfusion.Blazor;
 
@@ -19,6 +20,7 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+builder.Services.AddSingleton<AppSettingsService>();
 
 builder.Services.AddAuthentication(options =>
     {
